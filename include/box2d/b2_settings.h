@@ -32,7 +32,19 @@
 #endif
 
 #define B2_NOT_USED(x) ((void)(x))
+
+#ifdef USE_EXCEPTIONS
+// pybox2d rewrites assertions in Box2D such that they can be caught in Python.
+#include <Python.h>
+
+class b2AssertException {
+    // The exception class when an assertion is raised
+};
+
+#define b2Assert(A) if (!(A)) { PyErr_SetString(PyExc_AssertionError, #A); throw b2AssertException(); }
+#else
 #define b2Assert(A) assert(A)
+#endif
 
 typedef signed char	int8;
 typedef signed short int16;
@@ -57,7 +69,7 @@ typedef unsigned int uint32;
 
 /// The maximum number of vertices on a convex polygon. You cannot increase
 /// this too much because b2BlockAllocator has a maximum object size.
-#define b2_maxPolygonVertices	8
+#define b2_maxPolygonVertices	16
 
 /// This is used to fatten AABBs in the dynamic tree. This allows proxies
 /// to move by a small amount without triggering a tree adjustment.
