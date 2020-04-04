@@ -27,6 +27,10 @@
 
 b2Version b2_version = {2, 4, 0};
 
+/// A velocity threshold for elastic collisions. Any collision with a relative linear
+/// velocity below this threshold will be treated as inelastic.
+float b2_velocityThreshold = 1.0f;
+
 // Memory allocators. Modify these to use your own allocator.
 void* b2Alloc(int32 size)
 {
